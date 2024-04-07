@@ -12,10 +12,24 @@ struct AlbumListView: View {
     @StateObject var ViewModel = AlbumListViewModel()
     var body: some View {
         NavigationView{
-            List(ViewModel.albums){ album in
-                Text(album.collectionName)
+            List{
                 
+                ForEach(ViewModel.albums){ album in
+                    Text(album.collectionName)
+                    
+                }
+                
+                if ViewModel.isLoading{
+                    ProgressView()
+                        .progressViewStyle(.circular)
+                } else{
+                    Color.clear
+                        .onAppear{
+                            ViewModel.loadMore()
+                        }
+                }
             }
+            
             .listStyle(.plain)
             .searchable(text: $ViewModel.searchTerm)
             .navigationTitle("search")
